@@ -8,10 +8,10 @@ class ConsumerRebalanceListenerHandler(ConsumerRebalanceListener):
 
     def get_current_offset(self):
         return current_offset
-    
+
     def add_offset(self, topic, partition, offset):
         key = TopicPartition(topic, partition)
-        current_offset[key] = OffsetAndMetadata(offset, 'commit')
+        current_offset[key] = OffsetAndMetadata(offset=offset, metadata='commit', leader_epoch=0)
 
     def on_partitions_revoked(self, revoked):
         print(f"Partitions revoked: {revoked}")
