@@ -1,8 +1,8 @@
-from kafka.structs import TopicPartition, OffsetAndMetadata
+from kafka import ConsumerRebalanceListener, TopicPartition, OffsetAndMetadata
 
 current_offset = {}
 
-class ConsumerRebalanceListenerHandler:
+class ConsumerRebalanceListenerHandler(ConsumerRebalanceListener):
     def __init__(self, consumer):
         self.consumer = consumer 
 
@@ -11,7 +11,7 @@ class ConsumerRebalanceListenerHandler:
     
     def add_offset(self, topic, partition, offset):
         key = TopicPartition(topic, partition)
-        current_offset[key] = OffsetAndMetadata(offset=offset, metadata='commit', leader_epoch=0)
+        current_offset[key] = OffsetAndMetadata(offset, 'commit')
 
     def on_partitions_revoked(self, revoked):
         print(f"Partitions revoked: {revoked}")
